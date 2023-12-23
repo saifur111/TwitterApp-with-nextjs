@@ -1,4 +1,4 @@
-import { GithubAuthClientID, GithubAuthClientSecret } from "../util/env-values";
+import { GithubAuthClientID, GithubAuthClientSecret } from "../../util/env-values";
 const githubSigninConfig = {
   id: "github",
   name: "github",

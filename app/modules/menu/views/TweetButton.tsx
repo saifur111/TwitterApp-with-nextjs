@@ -1,8 +1,7 @@
-import { FaFeather } from "react-icons/fa";
+import { TweetBtnProps } from "@/util/definations";
+import { FaFeather, FaSignOutAlt } from "react-icons/fa";
 
-const TweetBtn = () => {
-    
-  
+const TweetBtn = ({label}:TweetBtnProps) => {
     return (
       <div>
         <div className="
@@ -20,12 +19,16 @@ const TweetBtn = () => {
           transition 
           cursor-pointer
         ">
-          <FaFeather size={24} color="white" />
+          {label==="Tweet" && <FaFeather size={24} color="white" />}
+          {label==="Logout" && <FaSignOutAlt size={24} color="white" />}
         </div>
         <div className="
           mt-6
           hidden 
-          lg:block 
+          lg:flex 
+          items-row 
+          gap-4 
+          p-4 
           px-6
           py-2
           rounded-4
@@ -33,6 +36,8 @@ const TweetBtn = () => {
           hover:bg-opacity-90 
           cursor-pointer
         ">
+          {label==="Tweet" && <FaFeather size={24} color="white" />}
+          {label==="Logout" && <FaSignOutAlt size={24} color="white" />}
           <p 
             className="
               hidden 
@@ -42,7 +47,7 @@ const TweetBtn = () => {
               text-white 
               text-[20px]
           ">
-            Tweet
+            {label}
           </p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { Header } from "./components/Header";
 import TimelineContainer from "./modules/timeline/Container";
-import prisma from "./util/prisma-connection";
+import prisma from "../util/prisma-connection";
 
 export default async function Home() {
   const user = await prisma.user.findFirst({
@@ -8,6 +8,7 @@ export default async function Home() {
       email: 'mdsaifur.cse.98@gmail.com'
     }
   })
+  console.log(JSON.stringify(user));
   return (
     <>
       <Header label={user?.name}/>

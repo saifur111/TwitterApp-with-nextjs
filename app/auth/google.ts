@@ -1,4 +1,4 @@
-import { GoogleAuthClientID, GoogleAuthClientSecret } from "../util/env-values";
+import { GoogleAuthClientID, GoogleAuthClientSecret } from "../../util/env-values";
 
 const googleSigninConfig = {
   id: "google",

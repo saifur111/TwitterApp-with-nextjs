@@ -1,5 +1,5 @@
 
-import { authOptions } from '@/app/util/auth'
+import { authOptions } from '@/util/auth'
 import { getServerSession } from 'next-auth/next'
 import { NextResponse } from 'next/server'
 

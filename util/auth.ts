@@ -1,4 +1,3 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { NextAuthOptions} from "next-auth";
@@ -6,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { GoogleAuth } from "@/app/auth/google";
 import { GithubAuth } from "@/app/auth/github";
 import prisma from "./prisma-connection";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
@@ -42,8 +42,8 @@ export const authOptions: NextAuthOptions = {
         }
 
         const isPasswordValid = await compare(
-          credentials.password,
-          user.password
+          credentials.password, // from client site
+          user.password// from database
         )
 
         if (!isPasswordValid) {

@@ -1,7 +1,8 @@
 import { Sidebar } from './layout/AppSidebar';
 import { Rightbar } from './layout/AppRightbar';
+import { Props } from '@/util/definations';
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Layout = ({ children }:Props) => {
   return (
     <div className="h-screen bg-slate-900">
       <div className="container h-full mx-auto xl:px-30">
