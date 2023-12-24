@@ -1,8 +1,12 @@
-import Link from 'next/link';
+
+import { useCurrentUser } from '@/hooks/fetchData';
 import React from 'react'
 import { BsDot } from 'react-icons/bs';
 import { BsBellFill, BsHouseFill } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
+
+const { data: currentUser } = useCurrentUser();
+
 const items = [
     {
       icon: BsHouseFill,
@@ -13,12 +17,14 @@ const items = [
       icon: BsBellFill,
       label: 'Notifications',
       href: '/notifications',
-      alert: true
+      auth: true,
+      alert: currentUser?.hasNotification
     },
     {
       icon: FaUser,
       label: 'Profile',
-      href: `/users/userid`,
+      href: `/users/${currentUser?.id}`,
+      auth: true,
     },
   ]
 

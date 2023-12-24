@@ -1,9 +1,18 @@
+"use client"
 import { TweetBtnProps } from "@/util/definations";
-import { FaFeather, FaSignOutAlt } from "react-icons/fa";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { FaFeather, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 
 const TweetBtn = ({label}:TweetBtnProps) => {
+  const router = useRouter()
     return (
-      <div>
+      <div onClick={() => {
+        label==="Login" && router.push('/auth/login')
+        label==="Tweet" && router.push('/posts')
+        label==="Logout" && signOut()
+      }
+      }>
         <div className="
           mt-6
           lg:hidden 
@@ -21,6 +30,7 @@ const TweetBtn = ({label}:TweetBtnProps) => {
         ">
           {label==="Tweet" && <FaFeather size={24} color="white" />}
           {label==="Logout" && <FaSignOutAlt size={24} color="white" />}
+          {label==="Login" && <FaSignInAlt size={24} color="white" />}
         </div>
         <div className="
           mt-6
@@ -38,6 +48,7 @@ const TweetBtn = ({label}:TweetBtnProps) => {
         ">
           {label==="Tweet" && <FaFeather size={24} color="white" />}
           {label==="Logout" && <FaSignOutAlt size={24} color="white" />}
+          {label==="Login" && <FaSignInAlt size={24} color="white" />}
           <p 
             className="
               hidden 

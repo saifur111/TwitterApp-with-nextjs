@@ -1,5 +1,5 @@
 import React from 'react'
-import Avatar from '../../followers/views/Avatar'
+import Avatar from '../../Avatar'
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai';
 
 const FeedItem = () => {

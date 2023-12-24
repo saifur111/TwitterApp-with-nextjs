@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Layout from "./components/Layout";
+import Layout from "../components/Layout";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "@/providers/AuthProviders";
+import EditModal from "@/components/modals/EditModal";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
       <AuthProvider>
-        <Toaster />
-        <Layout>{children}</Layout>
+          <Toaster />
+          <EditModal />
+          <Layout>{children}</Layout>
       </AuthProvider>
       </body>
     </html>
