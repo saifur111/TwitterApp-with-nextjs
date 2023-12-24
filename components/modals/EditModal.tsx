@@ -2,15 +2,16 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import useEditModal from "@/hooks/useEditModal";
+import useEditModal from "@/hooks/useModal";
 import Input from "../Input";
 import Modal from "../Modal";
 import ImageUpload from "../ImageUpload";
 import { useCurrentUser, useUser } from "@/hooks/fetchData";
+import useSWR from "swr";
+import { fetcher } from "@/libs/fetcher";
 
 const EditModal = () => {
-    
-  const { data: currentUser } = useCurrentUser();
+  const { data: currentUser } = useSWR('/api/current', fetcher);
   const { data: mutateFetchedUser } = useUser(currentUser?.id);
   const editModal = useEditModal();
 

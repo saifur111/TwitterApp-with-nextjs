@@ -1,9 +1,11 @@
 import { useMemo } from "react";
 import { BiCalendar } from "react-icons/bi";
 import { format } from "date-fns";
-import useEditModal from "@/hooks/useEditModal";
+import useEditModal from "@/hooks/useModal";
 import Button from "@/components/Button";
 import { useCurrentUser, useUser } from "@/hooks/fetchData";
+import useSWR from "swr";
+import { fetcher } from "@/libs/fetcher";
 
 
 interface UserBioProps {
@@ -11,7 +13,7 @@ interface UserBioProps {
 }
 
 const UserBio = ({ userId }:UserBioProps) => {
-  const { data: currentUser } = useCurrentUser();
+  const { data: currentUser, isLoading } = useSWR('/api/current', fetcher);
   const { data: fetchedUser } = useUser(userId);
 
   const editModal = useEditModal();

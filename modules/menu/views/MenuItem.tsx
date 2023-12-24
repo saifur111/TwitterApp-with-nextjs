@@ -1,38 +1,37 @@
 
+'use client'
 import { useCurrentUser } from '@/hooks/fetchData';
-import React from 'react'
+import useModal from '@/hooks/useModal';
+import { useRouter } from 'next/navigation';
+import React, { useCallback } from 'react'
+import { IconType } from 'react-icons';
 import { BsDot } from 'react-icons/bs';
-import { BsBellFill, BsHouseFill } from "react-icons/bs";
-import { FaUser } from "react-icons/fa";
+interface MenuItemProps {
+  label: string;
+  icon: IconType;
+  href?: string;
+  onClick?: () => void;
+  auth?: boolean;
+  alert?: boolean;
+}
+const MenuItem = ({ label, icon: Icon, href, auth, onClick, alert }:MenuItemProps) => {
+  const router = useRouter();
+  const loginModal = useModal();
 
-const { data: currentUser } = useCurrentUser();
+  const currentUser=useCurrentUser();
+  const handleClick = useCallback(() => {
+    if (onClick) {
+      return onClick();
+    }
 
-const items = [
-    {
-      icon: BsHouseFill,
-      label: 'Home',
-      href: '/',
-    },
-    {
-      icon: BsBellFill,
-      label: 'Notifications',
-      href: '/notifications',
-      auth: true,
-      alert: currentUser?.hasNotification
-    },
-    {
-      icon: FaUser,
-      label: 'Profile',
-      href: `/users/${currentUser?.id}`,
-      auth: true,
-    },
-  ]
-
-const MenuItem = () => {
-  return (
-    <>
-    {items.map((item) => (
-    <div key={item.href} className="flex flex-row">
+    if (auth && !currentUser) {
+      loginModal.onOpen();
+    } else if (href) {
+      router.push(href);
+    }
+  }, [router, href, auth, loginModal, onClick, currentUser]);
+  return ( 
+    <div  onClick={handleClick}  className="flex flex-row">
       <div className="
         relative
         rounded
@@ -47,8 +46,8 @@ const MenuItem = () => {
         cursor-pointer 
         lg:hidden
       ">
-        <item.icon size={28} color="white" />
-        {item.alert ? <BsDot className="text-red-500 absolute -top-4 left-0" size={70} /> : null}
+        <Icon size={28} color="white" />
+        {alert ? <BsDot className="text-red-500 absolute -top-4 left-0" size={70} /> : null}
       </div>
       <div className="
         relative
@@ -63,15 +62,13 @@ const MenuItem = () => {
         cursor-pointer
         items-center
       ">
-        <item.icon size={24} color="white" />
+        <Icon size={24} color="white" />
         <p className="hidden lg:block text-white text-xl">
-          {item.label}
+          {label}
         </p>
-        {item.alert ? <BsDot className="text-red-500 absolute -top-4 left-0" size={70} /> : null}
+        {alert ? <BsDot className="text-red-500 absolute -top-4 left-0" size={70} /> : null}
       </div>
     </div>
-    ))}
-    </>
 
   )
 }

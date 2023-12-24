@@ -35,7 +35,7 @@ export interface ModalProps {
     disabled?: boolean;
   }
   
-export interface EditModalStore {
+export interface ModalStore {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
@@ -53,4 +53,13 @@ export interface EditModalStore {
     label: string;
     value?: string;
     disabled?: boolean;
+  }
+  export interface FormProps {
+    placeholder: string;
+    isComment?: boolean;
+    postId?: string;
+  }
+  export interface PostItemProps {
+    data: Record<string, any>;
+    userId?: string;
   }

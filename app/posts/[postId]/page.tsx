@@ -1,20 +1,19 @@
 
 import { ClipLoader } from "react-spinners";
-
-import usePost from "@/hooks/usePost";
 import { useSearchParams } from "next/navigation";
 import { Header } from "@/components/Header";
 import FeedItem from "@/modules/timeline/views/FeedItem";
-
-
+import Form from "@/components/Form";
+import { usePost } from "@/hooks/fetchData";
+import CommentFeed from "@/modules/timeline/views/CommentFeed";
 
 const PostView = () => {
   const searchParams =  useSearchParams ();
   const  postId  = searchParams.get('postId')
 
-  const { data: fetchedPost, isLoading } = usePost(postId as string);
+  const { data: fetchedPost} = usePost(postId as string);
 
-  if (isLoading || !fetchedPost) {
+  if (!fetchedPost) {
     return (
       <div className="flex justify-center items-center h-full">
         <ClipLoader color="lightblue" size={80} />
@@ -26,8 +25,8 @@ const PostView = () => {
     <>
       <Header  label="Tweet" />
       <FeedItem data={fetchedPost} />
-      {/* <Form postId={postId as string} isComment placeholder="Tweet your reply" /> */}
-      {/* <CommentFeed comments={fetchedPost?.comments} /> */}
+      <Form postId={postId as string} isComment placeholder="Tweet your reply" />
+      <CommentFeed comments={fetchedPost?.comments} />
     </>
    );
 }

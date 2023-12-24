@@ -1,3 +1,4 @@
+import Form from "@/components/Form";
 import { Header } from "../components/Header";
 import TimelineContainer from "../modules/timeline/Container";
 import prisma from "../util/prisma-connection";
@@ -11,7 +12,8 @@ export default async function Home() {
   console.log(JSON.stringify(user));
   return (
     <>
-      <Header label={user?.name}/>
+      <Header label='Home'/>
+      <Form placeholder="Start your tweet ..." />
       <TimelineContainer/>
     </>
   )

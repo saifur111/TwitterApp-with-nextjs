@@ -1,18 +1,27 @@
 "use client"
+import { useCurrentUser } from "@/hooks/fetchData";
+import useModal from "@/hooks/useModal";
+import { fetcher } from "@/libs/fetcher";
 import { TweetBtnProps } from "@/util/definations";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useCallback } from "react";
 import { FaFeather, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import useSWR from "swr";
 
 const TweetBtn = ({label}:TweetBtnProps) => {
-  const router = useRouter()
+  const router = useRouter();
+  const loginModal = useModal();
+  const { data: currentUser, isLoading } = useSWR('/api/current', fetcher);
+
+  const onClick = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+
+    router.push('/');
+  }, [loginModal, router, currentUser]);
     return (
-      <div onClick={() => {
-        label==="Login" && router.push('/auth/login')
-        label==="Tweet" && router.push('/posts')
-        label==="Logout" && signOut()
-      }
-      }>
+      <div onClick={onClick}>
         <div className="
           mt-6
           lg:hidden 

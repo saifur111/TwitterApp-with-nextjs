@@ -10,87 +10,50 @@ import { compare } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: 'jwt'
-  },
   providers: [
     GoogleProvider(GoogleAuth.config),
     GithubProvider(GithubAuth.config),
     CredentialsProvider({
-      name: 'Sign in',
+      name: 'credentials',
       credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'hello@example.com'
-        },
-        password: { label: 'Password', type: 'password' }
+        email: { label: 'email', type: 'text' },
+        password: { label: 'password', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
-          return null
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Invalid credentials');
         }
 
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email
           }
-        })
+        });
 
-        if (!user) {
-          return null
+        if (!user || !user?.hashedPassword) {
+          throw new Error('Invalid credentials');
         }
 
-        const isPasswordValid = await compare(
-          credentials.password, // from client site
-          user.password// from database
-        )
+        const isCorrectPassword = await compare(
+          credentials.password,
+          user.hashedPassword
+        );
 
-        if (!isPasswordValid) {
-          return null
+        if (!isCorrectPassword) {
+          throw new Error('Invalid credentials');
         }
 
-        return {
-          id: user.id ,
-          email: user.email,
-          name: user.name,
-          randomKey: 'i am secret jwt'
-        }
+        return user;
       }
     })
   ],
-  callbacks: {
-    session: ({ session, token }) => {
-      console.log('Session Callback', { session, token })
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          image:token.image,
-          randomKey: token.randomKey
-        }
-      }
-    },
-    jwt: ({ token, user }) => {
-      console.log('JWT Callback', { token, user })
-      if (user) {
-        const u = user as unknown as any
-        return {
-          ...token,
-          id: u.id,
-          image:u.image,
-          randomKey: u.randomKey
-        }
-      }
-      return token
-    }
+  debug: process.env.NODE_ENV === 'development',
+  session: {
+    strategy: 'jwt',
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET as string,
   },
   
-  // Define custom pages for
-  pages: {
-    signIn: "/auth/login",
-    error: "/auth/error",
-  },
   secret :process.env.NEXTAUTH_SECRET as string,
 };

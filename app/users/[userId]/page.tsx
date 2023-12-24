@@ -1,21 +1,21 @@
 
 import { ClipLoader } from "react-spinners";
-import useUser from "@/hooks/useUser";
-import UserBio from "@/components/users/UserBio";
-import UserHero from "@/components/users/UserHero";
 import { Header } from "@/components/Header";
 import Feed from "@/modules/timeline/views/Feed";
 import { useSearchParams  } from "next/navigation";
+import { useUser } from "@/hooks/fetchData";
+import UserBio from "@/modules/user/views/UserBio";
+import UserHero from "@/modules/user/views/UserHero";
 
 
 
 const UserView = () => {
-    const searchParams =  useSearchParams ();
+  const searchParams =  useSearchParams ();
   const  userId  = searchParams.get('userId')
 
-  const { data: fetchedUser, isLoading } = useUser(userId as string);
+  const { data: fetchedUser} = useUser(userId as string);
 
-  if (isLoading || !fetchedUser) {
+  if (!fetchedUser) {
     return (
       <div className="flex justify-center items-center h-full">
         <ClipLoader color="lightblue" size={80} />
